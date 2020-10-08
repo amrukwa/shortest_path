@@ -8,8 +8,7 @@ namespace test
 {
 	TEST_CLASS(test)
 	{
-	public:
-		
+	public:	
 		TEST_METHOD(Testfoo)
 		{
 			Assert::AreEqual(4, foo(2));
