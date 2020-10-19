@@ -44,7 +44,7 @@ public:
 
 };
 
-int main()
+/*int main()
 {
     Drink Beverage;
     Drink beverage(1, 1);
@@ -53,4 +53,4 @@ int main()
     Juice OrangeJuice("sweet", 1, 1);
     OrangeJuice.describe();
     return 0;
-}
+}*/
