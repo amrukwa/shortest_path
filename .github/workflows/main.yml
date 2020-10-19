@@ -30,11 +30,11 @@ jobs:
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1
 
-      # Runs a single command using the runners shell
+      # Builds project
       - name: Debug build
-        run:  msbuild Project/dijikstra/dijikstra.sln /p:Configuration=Debug
-
-      # Runs a set of commands using the runners shell
+        run:  devenv dijikstra.sln /Build "Debug|x86"
+      
+      # Builds release
       - name: Release build
-        run:  msbuild Project/dijikstra/dijikstra.sln /p:Configuration=Release
-          
+        run:  devenv dijikstra.sln /Build "Release|x86"
+        
