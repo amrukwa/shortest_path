@@ -16,7 +16,7 @@ namespace test
 
 		TEST_METHOD(Testfoo2)
 		{
-			Assert::AreEqual(4, foo(3));
+			Assert::AreEqual(5, foo(3));
 		}
 	};
 }
