@@ -3,7 +3,8 @@
 
 int foo(int x)
 {
-	return x + 2;
+	int f = x+2;
+	return f;
 }
 
 int main()
