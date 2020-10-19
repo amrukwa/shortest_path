@@ -1,0 +1,33 @@
+name: build and test
+
+on:
+  push:
+    branches: [ main, project ]
+  pull_request:
+    branches: [ main, project ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Debug build
+        run:  msbuild Project/dijikstra/dijikstra.sln /p:Configuration=Debug
+
+      - name: Release build
+        run:  msbuild Project/dijikstra/dijikstra.sln /p:Configuration=Release
+      
+      - name: Setup VSTest.console.exe
+        uses: darenm/Setup-VSTest@v1
+      
+      - name: Perform unit testing
+        run:  VSTest.Console.exe Project/dijikstra/Debug/test.dll
