@@ -31,5 +31,3 @@ jobs:
       
       - name: Perform unit testing
         run:  VSTest.Console.exe Project/dijikstra/Debug/test.dll
-    
-        
