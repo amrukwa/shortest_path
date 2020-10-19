@@ -27,9 +27,9 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Debug build
-        run:  msbuild dijikstra.sln /p:Configuration=Debug
+        run:  msbuild Project/dijikstra/dijikstra.sln /p:Configuration=Debug
 
       # Runs a set of commands using the runners shell
       - name: Release build
-        run:  msbuild dijikstra.sln /p:Configuration=Release
+        run:  msbuild Project/dijikstra/dijikstra.sln /p:Configuration=Release
           
