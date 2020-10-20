@@ -43,6 +43,8 @@ jobs:
         run: sudo apt install valgrind
       - name: Get artifacts
         uses: actions/download-artifact@v2
+      - name: Change permissions
+        run: chmod a+x /home/runner/work/shortest_path/shortest_path/dijikstra-for-valgrind/dijikstra.exe
       - name: Run valgrind
         run: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt /home/runner/work/shortest_path/shortest_path/dijikstra-for-valgrind/dijikstra.exe
 
