@@ -33,20 +33,18 @@ jobs:
       
       - name: Perform unit testing
         run:  VSTest.Console.exe Project/dijikstra/Debug/test.dll
-  detect memory leaks:
+
+  detect-memory-leaks:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      
+      - uses: actions/checkout@v2     
       - name: Add valgrind
         run: sudo apt install valgrind
-
       - name: Get artifacts
         uses: actions/download-artifact@v2
         with:
           name: dijikstra-for-valgrind
-
       - name: Run valgrind
         run: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt Project/dijikstra/x64/Debug/dijikstra.exe
 
