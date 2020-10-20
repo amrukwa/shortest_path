@@ -19,12 +19,6 @@ jobs:
       - name: Debug build
         run:  msbuild Project/dijikstra/dijikstra.sln /p:Configuration=Debug
 
-      - name: Archive project for leak detection
-        uses: actions/upload-artifact@v2
-        with:
-          name: dijikstra-for-valgrind
-          path: Project/dijikstra/x64/Debug/dijikstra.exe
-
       - name: Release build
         run:  msbuild Project/dijikstra/dijikstra.sln /p:Configuration=Release
       
@@ -41,10 +35,12 @@ jobs:
       - uses: actions/checkout@v2     
       - name: Add valgrind
         run: sudo apt install valgrind
-      - name: Get artifacts
-        uses: actions/download-artifact@v2
-      - name: Change permissions
-        run: chmod a+x /home/runner/work/shortest_path/shortest_path/dijikstra-for-valgrind/dijikstra.exe
+      - name: Create env
+        run: |
+             sudo apt-get update
+             sudo apt-get install build-essential manpages-dev
+      - name: Build the project
+        run: cc dijikstra/Source.cpp -o dijikstra.exe
       - name: Run valgrind
-        run: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt /home/runner/work/shortest_path/shortest_path/dijikstra-for-valgrind/dijikstra.exe
+        run: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt dijikstra.exe
 
