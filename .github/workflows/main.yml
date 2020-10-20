@@ -35,11 +35,9 @@ jobs:
       - name: Add valgrind
         run: sudo apt install valgrind
       - name: Create env
-        run: |
-             sudo apt-get update
-             sudo apt-get install build-essential manpages-dev
+        run: sudo apt-get install gcc g++ make -y
       - name: Build the project
-        run: cc Project/dijikstra/dijikstra/Source.cpp -o dijikstra.exe
+        run: g++ Project/dijikstra/dijikstra/Source.cpp -o dijikstra.exe
       - name: Run valgrind
         run: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt dijikstra.exe
 
