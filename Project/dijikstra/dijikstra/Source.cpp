@@ -10,5 +10,6 @@ int main()
 	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
 	int* x = (int*)malloc(3 * sizeof(int));
 	//free(x);
+	system("pause");
 	return 0;
 }
