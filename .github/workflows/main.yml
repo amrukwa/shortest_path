@@ -6,15 +6,11 @@ on:
   pull_request:
     branches: [ main, project ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: windows-latest
 
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
       - name: Add msbuild to PATH
@@ -22,6 +18,12 @@ jobs:
 
       - name: Debug build
         run:  msbuild Project/dijikstra/dijikstra.sln /p:Configuration=Debug
+
+      - name: Archive project for leak detection
+        uses: actions/upload-artifact@v2
+        with:
+          name: dijikstra-for-valgrind
+          path: Project/dijikstra/x64/Debug/dijikstra.exe
 
       - name: Release build
         run:  msbuild Project/dijikstra/dijikstra.sln /p:Configuration=Release
@@ -31,3 +33,20 @@ jobs:
       
       - name: Perform unit testing
         run:  VSTest.Console.exe Project/dijikstra/Debug/test.dll
+  detect memory leaks:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Add valgrind
+        run: sudo apt install valgrind
+
+      - name: Get artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dijikstra-for-valgrind
+
+      - name: Run valgrind
+        run: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt Project/dijikstra/x64/Debug/dijikstra.exe
+
