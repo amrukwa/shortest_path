@@ -29,7 +29,6 @@ jobs:
         run:  VSTest.Console.exe Project/dijikstra/Debug/test.dll
 
   detect-memory-leaks:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2     
@@ -40,7 +39,7 @@ jobs:
              sudo apt-get update
              sudo apt-get install build-essential manpages-dev
       - name: Build the project
-        run: cc dijikstra/Source.cpp -o dijikstra.exe
+        run: cc Project/dijikstra/dijikstra/Source.cpp -o dijikstra.exe
       - name: Run valgrind
         run: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt dijikstra.exe
 
