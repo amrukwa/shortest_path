@@ -11,19 +11,14 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
-      
+      - uses: actions/checkout@v2     
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1
-
       - name: Debug build
         run:  msbuild Project/dijikstra/dijikstra.sln /p:Configuration=Debug
-
       - name: Release build
-        run:  msbuild Project/dijikstra/dijikstra.sln /p:Configuration=Release
-      
+        run:  msbuild Project/dijikstra/dijikstra.sln /p:Configuration=Release  
       - name: Setup VSTest.console.exe
-        uses: darenm/Setup-VSTest@v1
-      
+        uses: darenm/Setup-VSTest@v1      
       - name: Perform unit testing
         run:  VSTest.Console.exe Project/dijikstra/Debug/test.dll
