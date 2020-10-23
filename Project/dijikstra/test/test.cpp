@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "dijikstra/Header.h"
+#include "dijikstra/Node.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

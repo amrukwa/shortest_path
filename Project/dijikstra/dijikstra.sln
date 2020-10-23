@@ -9,12 +9,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj",
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_without_build|x64 = Debug_without_build|x64
+		Debug_without_build|x86 = Debug_without_build|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{148ED70A-CB25-4CF8-A59C-BB82491D3FC6}.Debug_without_build|x64.ActiveCfg = Debug_without_build|x64
+		{148ED70A-CB25-4CF8-A59C-BB82491D3FC6}.Debug_without_build|x86.ActiveCfg = Debug_without_build|Win32
 		{148ED70A-CB25-4CF8-A59C-BB82491D3FC6}.Debug|x64.ActiveCfg = Debug|x64
 		{148ED70A-CB25-4CF8-A59C-BB82491D3FC6}.Debug|x64.Build.0 = Debug|x64
 		{148ED70A-CB25-4CF8-A59C-BB82491D3FC6}.Debug|x86.ActiveCfg = Debug|Win32
@@ -23,6 +27,8 @@ Global
 		{148ED70A-CB25-4CF8-A59C-BB82491D3FC6}.Release|x64.Build.0 = Release|x64
 		{148ED70A-CB25-4CF8-A59C-BB82491D3FC6}.Release|x86.ActiveCfg = Release|Win32
 		{148ED70A-CB25-4CF8-A59C-BB82491D3FC6}.Release|x86.Build.0 = Release|Win32
+		{82AA0268-7022-48C0-ADCF-936184FB76A1}.Debug_without_build|x64.ActiveCfg = Debug_without_build|x64
+		{82AA0268-7022-48C0-ADCF-936184FB76A1}.Debug_without_build|x86.ActiveCfg = Debug_without_build|Win32
 		{82AA0268-7022-48C0-ADCF-936184FB76A1}.Debug|x64.ActiveCfg = Debug|x64
 		{82AA0268-7022-48C0-ADCF-936184FB76A1}.Debug|x64.Build.0 = Debug|x64
 		{82AA0268-7022-48C0-ADCF-936184FB76A1}.Debug|x86.ActiveCfg = Debug|Win32
