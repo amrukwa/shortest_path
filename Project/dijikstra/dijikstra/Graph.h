@@ -17,7 +17,22 @@ public:
 	}
 
 	void from_one_set(std::string start, std::string aim, double d)
-	{}
+	{
+		int find_start = find_where_node(start);
+		int find_aim = find_where_node(aim);
+		if (find_start == -1)
+		{
+			add_node(start);
+			find_start = nodes.size() - 1;
+		}
+		if (find_aim == -1)
+		{
+			add_node(aim);
+			find_aim= nodes.size() - 1;
+		}
+		Edge someEdge(find_start, find_aim, d);
+		edges.push_back(someEdge);
+	}
 
 	int find_where_node(std::string name)
 	{
@@ -39,13 +54,5 @@ public:
 	{
 		Node someNode(name);
 		nodes.push_back(someNode);
-	}
-	void add_edge(std::string start, std::string aim, double d)
-	// We are assuming the nodes already exist
-	{
-		int v = find_where_node(start); 
-		int w = find_where_node(aim);
-		Edge someEdge(v, w, d);
-		edges.push_back(someEdge);
 	}
 };

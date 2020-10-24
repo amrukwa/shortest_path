@@ -57,37 +57,31 @@ namespace test_graph
 				Assert::AreEqual(s, graph.nodes[i].name);
 			}
 		}
-		TEST_METHOD(Test_if_edge)
+		TEST_METHOD(Test_from_one_set_new)
 		{
 			Graph graph;
-			int* starts = (int*)malloc(sizeof(int) * 2);
-			starts[0] = 0;
-			starts[1] = 2;
-			int* ends = (int*)malloc(sizeof(int) * 2);
-			ends[0] = 1;
-			ends[1] = 0;
-			double* dists = (double*)malloc(sizeof(double) * 2);
-			dists[0] = 2.0;
-			dists[1] = 3.0;
-			graph.add_node("zero");
-			graph.add_node("one");
-			graph.add_node("two");
-			graph.add_edge("zero", "one", 2.0);
-			graph.add_edge("two", "zero", 3.0);
-			for (int i = 0; i < 2; i++)
-			{
-				Assert::AreEqual(starts[i], graph.edges[i].start);
-				Assert::AreEqual(ends[i], graph.edges[i].destination);
-				Assert::AreEqual(dists[i], graph.edges[i].dist);
-			}
-			free(starts);
-			free(ends);
-			free(dists);
-		}
+			graph.from_one_set("v1", "v0", 2.3);
+			std::string v0 = "v0";
+			std::string v1 = "v1";
+			Assert::AreEqual(v0, graph.nodes[1].name);
+			Assert::AreEqual(v1, graph.nodes[0].name);
+			Assert::AreEqual(0, graph.edges[0].start);
+			Assert::AreEqual(1, graph.edges[0].destination);
+			Assert::AreEqual(2.3, graph.edges[0].dist);
 
-		TEST_METHOD(Test_from_one_line_new)
+		}
+		TEST_METHOD(Test_from_one_set_adding)
 		{
 			Graph graph;
+			graph.from_one_set("v0", "v1", 2.3);
+			graph.from_one_set("v2", "v0", 3.3);
+			std::string v0 = "v0";
+			std::string v2 = "v2";
+			Assert::AreEqual(v0, graph.nodes[0].name);
+			Assert::AreEqual(v2, graph.nodes[2].name);
+			Assert::AreEqual(2, graph.edges[1].start);
+			Assert::AreEqual(0, graph.edges[1].destination);
+			Assert::AreEqual(3.3, graph.edges[1].dist);
 		}
 	};
 
