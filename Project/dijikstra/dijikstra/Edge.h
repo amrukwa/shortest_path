@@ -40,6 +40,6 @@ public:
 			}
 			if (d < 0) {throw 1;}
 		}
-		catch (int i) {dist = -d;}
+		catch (int) {dist = -d;}
 	}
 };
