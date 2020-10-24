@@ -1,22 +1,48 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "dijikstra/Node.h"
+#define private public // only for the test purposes, I know it is a bad practice
+#include "dijikstra/Graph.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace test
+namespace test_components
 {
-	TEST_CLASS(test)
+	TEST_CLASS(testNode)
 	{
 	public:	
-		TEST_METHOD(Testfoo1)
+		TEST_METHOD(TestINF)
 		{
-			Assert::AreEqual(4, foo(2));
+			// I check if the value chosen randomly is always smaller than infinity.
+			Assert::IsTrue(RAND_MAX < INF);
 		}
 
-		TEST_METHOD(Testfoo2)
+		TEST_METHOD(Test_if_unvisited)
 		{
-			Assert::AreEqual(5, foo(3));
+			Node node;
+			Assert::IsFalse(node.visited);
 		}
+	};
+
+	TEST_CLASS(testEdge)
+	{
+	public:
+		TEST_METHOD(Test_if_nonnegative)
+		{
+			Edge edge(1, 0, -5);
+			Assert::AreEqual(5.0, edge.dist);
+		}
+	};
+}
+
+namespace test_graph
+{
+	TEST_CLASS(testGraph)
+	{
+	public:
+	};
+
+	TEST_CLASS(testDijikstra)
+	{
+	public:
 	};
 }

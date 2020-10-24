@@ -1,13 +1,28 @@
 #pragma once
 # include <iostream>
+# include <limits>
+# include <string>
+# include <vector>
+#include <queue> 
+# define INF std::numeric_limits<int>::max()
 
-int foo(int x)
-{
-	int f = x+2;
-	return f;
-}
+class Node {
+private:
+	bool visited = false;
+	double dist = INF;
+	int previous = -1;
 
-int main()
-{
-	return 0;
-}
+public:
+	std::string name;
+	Node(){}
+	Node(std::string n)
+	{
+		name = n;
+	}
+	~Node(){}
+
+	void visit()
+	{
+	}
+};
+
