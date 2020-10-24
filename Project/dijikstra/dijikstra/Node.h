@@ -21,8 +21,16 @@ public:
 	}
 	~Node(){}
 
+	bool is_name(std::string n)
+	{
+		if (name == n)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	void visit()
 	{
 	}
 };
-
