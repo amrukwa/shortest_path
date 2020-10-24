@@ -40,11 +40,9 @@ public:
         flavour = flavor;
         std::cout << "This is a derived class parametrized constructor." << std::endl;
     }
-
-
 };
 
-/*int main()
+int main()
 {
     Drink Beverage;
     Drink beverage(1, 1);
@@ -53,4 +51,4 @@ public:
     Juice OrangeJuice("sweet", 1, 1);
     OrangeJuice.describe();
     return 0;
-}*/
+}
