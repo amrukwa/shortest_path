@@ -14,7 +14,6 @@ public:
 
 	Graph(std::ifstream& datafile)
 	{
-
 	}
 
 	int find_where_node(std::string name)

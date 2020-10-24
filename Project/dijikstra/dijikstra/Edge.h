@@ -26,7 +26,6 @@ public:
 	~Edge() {}
 	Edge(int v, int w, double d)
 	{
-
 		try 
 		{
 			start = v;
