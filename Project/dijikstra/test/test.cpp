@@ -57,6 +57,15 @@ namespace test_graph
 				Assert::AreEqual(s, graph.nodes[i].name);
 			}
 		}
+		TEST_METHOD(Test_find_and_fill)
+		{
+			Graph graph;
+			int v0 = graph.find_and_fill_node("v0");
+			graph.add_node("v1");
+			int v1 = graph.find_and_fill_node("v1");
+			Assert::AreEqual(0, v0);
+			Assert::AreEqual(1, v1);
+		}
 		TEST_METHOD(Test_from_one_set_new)
 		{
 			Graph graph;
