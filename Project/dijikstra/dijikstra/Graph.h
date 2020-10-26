@@ -79,7 +79,7 @@ private:
 
 	void read_typical_line(std::ifstream& datafile)
 	{
-		std::string st, end;
+		std::string st, end, trashbox;
 		double dist = 0;
 		try {
 			datafile >> st >> end >> dist;
@@ -88,15 +88,12 @@ private:
 		}
 		catch (int)
 		{
-			std::cout << st << " " << end << std::endl;
-			std::cout << "The edge should have positive value. Specify the correct length." << std::endl;
+			std::cout << st << " " << end << std::endl << "The edge should have positive value. Specify the correct length." << std::endl;
 			std::cin >> dist;
 		}
 		catch (char)
 		{
-			std::string trashbox;
-			std::cout << st << " " << end << std::endl;
-			std::cout << "Invalid edge. Specify the correct length." << std::endl;
+			std::cout << st << " " << end << std::endl << "Invalid edge. Specify the correct length." << std::endl;
 			std::cin >> dist;
 			datafile.clear();
 			datafile >> trashbox;

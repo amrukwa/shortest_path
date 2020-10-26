@@ -32,11 +32,7 @@ public:
 			destination = w;
 			dist = d;
 			check_nodes(v, w);
-			if (d == 0)
-			{
-				std::cout << "The edge length cannot be 0.";
-				throw std::invalid_argument("The edge length cannot be 0.");
-			}
+			if (d == 0) {throw std::invalid_argument("The edge length cannot be 0.");}
 			if (d < 0) {throw 1;}
 		}
 		catch (int) {dist = -d;}

@@ -11,10 +11,7 @@ std::ifstream ask_for_directory()
 	std::cin >> dir;
 	try {
 		ifile.open(dir);
-		if (!ifile)
-		{
-			throw 1;
-		}
+		if (!ifile){throw 1;}
 	}
 	catch(int i)
 	{
