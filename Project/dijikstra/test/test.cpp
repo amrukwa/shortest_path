@@ -77,7 +77,6 @@ namespace test_graph
 			Assert::AreEqual(0, graph.edges[0].start);
 			Assert::AreEqual(1, graph.edges[0].destination);
 			Assert::AreEqual(2.3, graph.edges[0].dist);
-
 		}
 		TEST_METHOD(Test_from_one_set_adding)
 		{
