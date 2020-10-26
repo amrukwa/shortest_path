@@ -37,6 +37,7 @@ int main()
 	if (!datafile) {std::ifstream datafile = ask_for_directory();}
 	Graph graph(datafile);
 	datafile.close();
-	system("pause");
+	std::cout << "Press any key to continue..." << std::endl;
+	char c = std::cin.get();
 	return 0;
 }
