@@ -37,10 +37,7 @@ int main()
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
 	std::ifstream datafile = load_from_current();
-	if (!datafile)
-	{
-		std::ifstream datafile = ask_for_directory();
-	}
+	if (!datafile) {std::ifstream datafile = ask_for_directory();}
 	Graph graph(datafile);
 	datafile.close();
 	system("pause");

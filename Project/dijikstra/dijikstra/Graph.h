@@ -3,9 +3,22 @@
 # include "Node.h"
 #include<fstream>
 
-void check_line(std::ifstream& datafile)
+std::vector<bool> check_lines(std::ifstream& datafile)
 {
-
+	std::vector<bool> is_for_graph;
+	int cur_rows = 0;
+	char c;
+	while (datafile.get(c))
+	{
+		if (c == ' ') {cur_rows += 1;}
+		else if (c == '\n')
+		{
+			if (cur_rows == 2) { is_for_graph.push_back(true); }
+			else { is_for_graph.push_back(false); }
+			cur_rows = 0;
+		}
+	}
+	return is_for_graph;
 }
 
 class Graph
@@ -18,7 +31,7 @@ private:
 
 	void show_nodes()
 	{
-		std::cout << "The map consists of the following cities:" << std::endl;
+		std::cout << "The map consists of the following cities: " << std::endl;
 		std::vector<Node>::iterator it;
 		for (it = nodes.begin(); it != nodes.end(); it++)
 		{std::cout << it->name << std::endl;}
@@ -28,7 +41,7 @@ private:
 	{ 
 		int node;
 		std::string n;
-		std::cout << "Choose the " << which_node << std::endl;
+		std::cout << "Choose the " << which_node << ":" << std::endl;
 		std::cin >> n;
 		try {
 			node = find_where_node(n);
@@ -49,9 +62,77 @@ private:
 		ending = user_choose_node("ending node");
 	}
 
-	void load_data(std::ifstream& datafile)
+	void ask_about_line(std::string line)
 	{
-		check_line(datafile);
+		std::string st, end;
+		double dist;
+		std::cout << line << "was provided. Specify the actual edge." << std::endl;
+		std::cin >> st >> end >> dist;
+		try {if (dist == 0) {throw 1;}}
+		catch (int)
+		{
+			std::cout << "The edge should have positive value. Specify the correct length." << std::endl;
+			std::cin >> dist;
+		}
+		from_one_set(st, end, dist);
+	}
+
+	void read_typical_line(std::ifstream& datafile)
+	{
+		std::string st, end;
+		double dist = -1;
+		try {
+			datafile >> st >> end >> dist;
+			if (datafile.fail()) { throw 'f'; }
+			else if (dist == 0) { throw 0; }
+		}
+		catch (int)
+		{
+			std::cout << st << " " << end << std::endl;
+			std::cout << "The edge should have positive value. Specify the correct length." << std::endl;
+			std::cin >> dist;
+		}
+		catch (char)
+		{
+			std::string trashbox;
+			std::cout << st << " " << end << std::endl;
+			std::cout << "Invalid edge. Specify the correct length." << std::endl;
+			std::cin >> dist;
+			datafile.clear();
+			datafile >> trashbox;
+		}
+		from_one_set(st, end, dist);
+	}
+
+	void load_data(std::ifstream& datafile, std::vector<bool>& is_for_graph)
+	{
+		for (int i = 0; i < is_for_graph.size(); i++)
+		{
+			if (is_for_graph[i]) {read_typical_line(datafile);}
+			else if (i == (is_for_graph.size()-1))
+			{
+				std::string st, end;
+				datafile >> st >> end;
+				int s = find_where_node(st);
+				int e = find_where_node(end);
+				if ((s == -1) || (e == -1)) 
+				{
+					std::cout << "At least one of the nodes doesn't belong to the graph." << std::endl;
+					is_for_graph[i] = true;
+				}
+				else
+				{
+					start = s;
+					ending = e;
+				}
+			}
+			else
+			{
+				std::string line;
+				std::getline(datafile, line);
+				ask_about_line(line);
+			}
+		}
 	}
 
 public:
@@ -60,8 +141,11 @@ public:
 
 	Graph(std::ifstream& datafile)
 	{
-		load_data(datafile);
-		ask_about_path();
+		std::vector<bool> is_for_graph = check_lines(datafile);
+		datafile.clear();
+		datafile.seekg(0, std::ios::beg);
+		load_data(datafile, is_for_graph);
+		if (is_for_graph.back()) {ask_about_path();}
 	}
 
 	void from_one_set(std::string start, std::string aim, double d)
