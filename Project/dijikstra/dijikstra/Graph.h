@@ -80,7 +80,7 @@ private:
 	void read_typical_line(std::ifstream& datafile)
 	{
 		std::string st, end;
-		double dist = -1;
+		double dist = 0;
 		try {
 			datafile >> st >> end >> dist;
 			if (datafile.fail()) { throw 'f'; }
@@ -104,28 +104,30 @@ private:
 		from_one_set(st, end, dist);
 	}
 
+	void read_aim_line(std::ifstream& datafile, std::vector<bool>& is_for_graph)
+	{
+		std::string st, end;
+		datafile >> st >> end;
+		int s = find_where_node(st);
+		int e = find_where_node(end);
+		if ((s == -1) || (e == -1))
+		{
+			std::cout << "At least one of the trip nodes doesn't belong to the graph." << std::endl;
+			is_for_graph.back() = true;
+		}
+		else
+		{
+			start = s;
+			ending = e;
+		}
+	}
+
 	void load_data(std::ifstream& datafile, std::vector<bool>& is_for_graph)
 	{
 		for (int i = 0; i < is_for_graph.size(); i++)
 		{
 			if (is_for_graph[i]) {read_typical_line(datafile);}
-			else if (i == (is_for_graph.size()-1))
-			{
-				std::string st, end;
-				datafile >> st >> end;
-				int s = find_where_node(st);
-				int e = find_where_node(end);
-				if ((s == -1) || (e == -1)) 
-				{
-					std::cout << "At least one of the nodes doesn't belong to the graph." << std::endl;
-					is_for_graph[i] = true;
-				}
-				else
-				{
-					start = s;
-					ending = e;
-				}
-			}
+			else if (i == (is_for_graph.size() - 1)) { read_aim_line(datafile, is_for_graph); }
 			else
 			{
 				std::string line;
