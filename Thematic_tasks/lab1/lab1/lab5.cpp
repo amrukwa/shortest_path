@@ -4,27 +4,17 @@
 #include <array>
 #include <fstream>
 
-class By0Division : public std::exception
-{
+class By0Division : public std::exception {};
 
-};
+class OutOfRange : public std::exception {};
 
-class OutOfRange : public std::exception
-{
-
-};
-
-class NoFile : public std::exception
-{
-
-};
+class NoFile : public std::exception {};
 
 class GoodClass
 {
 	int i = 0;
 	std::array<int, 5> my_storage = { -2, -1, 0, 1, 2 };
 public:
-
 	int SecureFunction1()
 	{
 		for (int i = 0; i < my_storage.size() - 1; i++)
