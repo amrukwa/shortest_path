@@ -80,11 +80,11 @@ private:
 	void read_typical_line(std::ifstream& datafile)
 	{
 		std::string st, end, trashbox;
-		double dist = 0;
+		double dist;
 		try {
 			datafile >> st >> end >> dist;
 			if (datafile.fail()) { throw 'f'; }
-			else if (dist == 0) { throw 0; }
+			if (dist == 0) { throw 0; }
 		}
 		catch (int)
 		{
