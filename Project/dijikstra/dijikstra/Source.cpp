@@ -3,7 +3,7 @@
 #include <crtdbg.h>
 # include "Graph.h"
 
-std::ifstream ask_for_directory()
+std::string ask_for_directory()
 {
 	std::ifstream ifile;
 	std::cout << "Please specify the directory of the file with the cities." << std::endl;
@@ -16,9 +16,9 @@ std::ifstream ask_for_directory()
 	catch(int i)
 	{
 		std::cout << "No such file." << std::endl;
-		ifile = ask_for_directory();
+		dir = ask_for_directory();
 	}
-	return ifile;
+	return dir;
 }
 
 std::ifstream load_from_current()
@@ -28,16 +28,25 @@ std::ifstream load_from_current()
 	return ifile;
 }
 
+void finish()
+{
+	std::cout << "Press any key to continue..." << std::endl;
+	char c = getchar();
+	if (c == '\n') { c = getchar(); }
+}
 
 int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
 	std::ifstream datafile = load_from_current();
-	if (!datafile) {std::ifstream datafile = ask_for_directory();}
+	if (!datafile) 
+	{
+		std::string dir = ask_for_directory();
+		datafile.open(dir);
+	}
 	Graph graph(datafile);
 	datafile.close();
-	std::cout << "Press any key to continue..." << std::endl;
-	char c = std::cin.get();
+	finish();
 	return 0;
 }
