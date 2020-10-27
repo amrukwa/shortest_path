@@ -21,6 +21,16 @@ std::vector<bool> check_lines(std::ifstream& datafile)
 	return is_for_graph;
 }
 
+std::string get_line(std::ifstream& datafile)
+{
+	char c;
+	std::string line;
+	datafile.get(c);
+	if (c != '\n') {datafile.putback(c);}
+	std::getline(datafile, line);
+	return line;
+}
+
 class Graph
 {
 private:
@@ -66,7 +76,7 @@ private:
 	{
 		std::string st, end;
 		double dist;
-		std::cout << line << "was provided. Specify the actual edge." << std::endl;
+		std::cout << line << " was provided. Specify the actual edge." << std::endl;
 		std::cin >> st >> end >> dist;
 		try {if (dist == 0) {throw 1;}}
 		catch (int)
@@ -127,8 +137,7 @@ private:
 			else if (i == (is_for_graph.size() - 1)) { read_aim_line(datafile, is_for_graph); }
 			else
 			{
-				std::string line;
-				std::getline(datafile, line);
+				std::string line = get_line(datafile);
 				ask_about_line(line);
 			}
 		}
