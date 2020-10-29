@@ -20,7 +20,7 @@ void check_nodes(int v, int w)
 
 void check_dist(double d)
 {
-	if (d == 0) { throw std::invalid_argument("The edge length cannot be 0."); }
+	if (d == 0) {throw std::string("The edge length cannot be 0/character.");}
 	if (d < 0) { throw NegativeEdge(); }
 }
 
@@ -44,5 +44,10 @@ public:
 			check_dist(d);
 		}
 		catch (NegativeEdge) {dist = -d;}
+		catch(std::string s)
+		{ 
+			std::cout << s;
+			exit(1); 
+		}
 	}
 };

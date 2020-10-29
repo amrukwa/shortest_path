@@ -11,7 +11,6 @@ public:
 		double dist;
 		std::cout << st << " " << end << std::endl << "The edge should have positive value. Specify the correct length." << std::endl;
 		std::cin >> dist;
-		std::cout << dist;
 		return dist;
 	}
 };
@@ -86,8 +85,8 @@ private:
 		try {node = user_choose_node(which_node);}
 		catch (InvalidNode)
 		{
-			std::cout << "No such node. Choose again." << std::endl;
-			node = user_validate_node(which_node);
+			std::cout << "No such node." << std::endl;
+			exit(1);
 		}
 		return node;
 	}
