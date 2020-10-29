@@ -31,6 +31,8 @@ public:
 	}
 };
 
+class InvalidNode : public std::exception {};
+
 std::vector<bool> check_lines(std::ifstream& datafile)
 {
 	std::vector<bool> is_for_graph;
@@ -73,14 +75,19 @@ private:
 		std::string n;
 		std::cout << "Choose the " << which_node << ":" << std::endl;
 		std::cin >> n;
-		try {
-			node = find_where_node(n);
-			if (node == -1) {throw 1;}
-		}
-		catch (int)
+		node = find_where_node(n);
+		if (node == -1) {throw InvalidNode();}
+		return node;
+	}
+
+	int user_validate_node(std::string which_node)
+	{
+		int node;
+		try {node = user_choose_node(which_node);}
+		catch (InvalidNode)
 		{
 			std::cout << "No such node. Choose again." << std::endl;
-			node = user_choose_node(which_node);
+			node = user_validate_node(which_node);
 		}
 		return node;
 	}
@@ -88,8 +95,8 @@ private:
 	void ask_about_path()
 	{
 		show_nodes();
-		start = user_choose_node("starting node");
-		ending = user_choose_node("ending node");
+		start = user_validate_node("starting node");
+		ending = user_validate_node("ending node");
 	}
 
 	double from_three(std::string& st, std::string& end, std::istream& datafile)

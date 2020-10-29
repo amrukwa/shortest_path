@@ -18,6 +18,12 @@ void check_nodes(int v, int w)
 	}
 }
 
+void check_dist(double d)
+{
+	if (d == 0) { throw std::invalid_argument("The edge length cannot be 0."); }
+	if (d < 0) { throw NegativeEdge(); }
+}
+
 class Edge
 {
 private:
@@ -35,8 +41,7 @@ public:
 			destination = w;
 			dist = d;
 			check_nodes(v, w);
-			if (d == 0) {throw std::invalid_argument("The edge length cannot be 0.");}
-			if (d < 0) {throw NegativeEdge();}
+			check_dist(d);
 		}
 		catch (NegativeEdge) {dist = -d;}
 	}
