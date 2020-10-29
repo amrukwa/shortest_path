@@ -1,48 +1,57 @@
 #pragma once
 # include <fstream>
 
-std::ifstream validate_directory();
-
 class NoDirectory : public std::exception
 {
 public:
-	void get_dir(std::ifstream& ifile)
+	void terminate()
 	{
-		std::cout << "No such file." << std::endl;
-		ifile = validate_directory();
+		std::cout << "No such file in chosen directory." << std::endl;
+		exit(1);
 	}
 };
 
-std::ifstream ask_for_directory()
+void give_help()
 {
-	std::string dir;
-	std::ifstream ifile;
-	std::cout << "Please specify the directory of the file with the cities." << std::endl;
-	std::cin >> dir;
-	ifile.open(dir);
-	if (!ifile) { throw NoDirectory(); }
-	return ifile;
+	std::cout << "By default, the program will try to read 'data.txt' file from current directory." << std::endl;
+	std::cout << "Use --help command to get help on the program usage." << std::endl;
+	std::cout << "Use --input= command, location and the name of the file to run the program on it: --input=location\\data.txt" << std::endl;
+	std::cout << "If something is wrong with the file you specified, you will be given opportunity to fix this." << std::endl;
 }
 
-std::ifstream validate_directory()
+void read_dir(char* adress, std::ifstream& ifile)
 {
-	std::ifstream ifile;
-	try { ifile = ask_for_directory(); }
-	catch (NoDirectory err) { err.get_dir(ifile); }
-	return ifile;
+	ifile.open(adress);
+	if (!ifile) {throw NoDirectory();}
 }
 
-std::ifstream load_from_current()
+ void load_from_current(std::ifstream& ifile)
 {
-	std::ifstream ifile;
 	ifile.open("data.txt");
 	if (!ifile) { throw NoDirectory(); }
-	return ifile;
 }
+
+ void use_commands(char* p, std::ifstream& datafile)
+ {
+	 if (strncmp(p, "--help", 6) == 0)
+	 {
+		 give_help();
+		 exit(0);
+	 }
+	 if (strncmp(p, "--input=", 8) == 0)
+	 {
+		 try { read_dir(p + 8, datafile); }
+		 catch (NoDirectory err) { err.terminate(); }
+	 }
+	 else
+	 {
+		 std::cout << "Unknown command" << std::endl;
+		 exit(1);
+	 }
+ }
 
 void finish()
 {
 	std::cout << "Press any key to continue..." << std::endl;
 	char c = getchar();
-	if (c == '\n') { c = getchar(); }
 }
