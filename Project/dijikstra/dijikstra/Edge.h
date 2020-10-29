@@ -44,5 +44,6 @@ public:
 			if (d < 0) {throw NegativeEdge();}
 		}
 		catch (NegativeEdge err) {dist = err.opposite(d);}
+		catch (std::invalid_argument err) { exit(1); }
 	}
 };
