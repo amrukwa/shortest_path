@@ -2,7 +2,12 @@
 # include <iostream>
 #include <exception>
 
-class NegativeEdge: public std::exception {};
+class NegativeEdge: public std::exception 
+{
+public:
+	double opposite(double d)
+	{return -d;}
+};
 
 void check_nodes(int v, int w)
 {
@@ -38,6 +43,6 @@ public:
 			if (d == 0) {throw std::invalid_argument("The edge length cannot be 0.");}
 			if (d < 0) {throw NegativeEdge();}
 		}
-		catch (NegativeEdge err) {dist = -d;}
+		catch (NegativeEdge err) {dist = err.opposite(d);}
 	}
 };
