@@ -1,5 +1,8 @@
 #pragma once
 # include <iostream>
+#include <exception>
+
+class NegativeEdge: public std::exception {};
 
 void check_nodes(int v, int w)
 {
@@ -33,8 +36,8 @@ public:
 			dist = d;
 			check_nodes(v, w);
 			if (d == 0) {throw std::invalid_argument("The edge length cannot be 0.");}
-			if (d < 0) {throw 1;}
+			if (d < 0) {throw NegativeEdge();}
 		}
-		catch (int) {dist = -d;}
+		catch (NegativeEdge err) {dist = -d;}
 	}
 };

@@ -3,6 +3,34 @@
 # include "Node.h"
 #include<fstream>
 
+class ZeroEdge : public std::exception
+{
+public:
+	double specify_edge(std::string st, std::string end)
+	{
+		double dist;
+		std::cout << st << " " << end << std::endl << "The edge should have positive value. Specify the correct length." << std::endl;
+		std::cin >> dist;
+		std::cout << dist;
+		return dist;
+	}
+};
+
+class InvalidEdge : public std::exception
+{
+public:
+	double specify_edge(std::string st, std::string end, std::istream& datafile)
+	{
+		double dist;
+		char trashbox;
+		std::cout << st << " " << end << std::endl << "Invalid edge. Specify the correct length." << std::endl;
+		datafile.clear();
+		datafile >> trashbox;
+		std::cin >> dist;
+		return dist;
+	}
+};
+
 std::vector<bool> check_lines(std::ifstream& datafile)
 {
 	std::vector<bool> is_for_graph;
@@ -39,14 +67,6 @@ private:
 	int ending;
 	int start;
 
-	void show_nodes()
-	{
-		std::cout << "The map consists of the following cities: " << std::endl;
-		std::vector<Node>::iterator it;
-		for (it = nodes.begin(); it != nodes.end(); it++)
-		{std::cout << it->name << std::endl;}
-	}
-
 	int user_choose_node(std::string which_node)
 	{ 
 		int node;
@@ -72,42 +92,33 @@ private:
 		ending = user_choose_node("ending node");
 	}
 
+	double from_three(std::string& st, std::string& end, std::istream& datafile)
+	{
+		double dist;
+		datafile >> st >> end >> dist;
+		if (datafile.fail()) {throw InvalidEdge();}
+		if (dist == 0) {throw ZeroEdge();}
+		return dist;
+	}
+
 	void ask_about_line(std::string line)
 	{
 		std::string st, end;
 		double dist;
 		std::cout << line << " was provided. Specify the actual edge." << std::endl;
-		std::cin >> st >> end >> dist;
-		try {if (dist == 0) {throw 1;}}
-		catch (int)
-		{
-			std::cout << "The edge should have positive value. Specify the correct length." << std::endl;
-			std::cin >> dist;
-		}
+		try {dist = from_three(st, end, std::cin);}
+		catch (ZeroEdge err) {dist = err.specify_edge(st, end);}
+		catch (InvalidEdge err) { dist = err.specify_edge(st, end, std::cin); }
 		from_one_set(st, end, dist);
 	}
 
 	void read_typical_line(std::ifstream& datafile)
 	{
-		std::string st, end, trashbox;
+		std::string st, end;
 		double dist;
-		try {
-			datafile >> st >> end >> dist;
-			if (datafile.fail()) { throw 'f'; }
-			if (dist == 0) { throw 0; }
-		}
-		catch (int)
-		{
-			std::cout << st << " " << end << std::endl << "The edge should have positive value. Specify the correct length." << std::endl;
-			std::cin >> dist;
-		}
-		catch (char)
-		{
-			std::cout << st << " " << end << std::endl << "Invalid edge. Specify the correct length." << std::endl;
-			std::cin >> dist;
-			datafile.clear();
-			datafile >> trashbox;
-		}
+		try {dist = from_three(st, end, datafile);}
+		catch (ZeroEdge err) {dist = err.specify_edge(st, end);}
+		catch (InvalidEdge err) {dist = err.specify_edge(st, end, datafile);}
 		from_one_set(st, end, dist);
 	}
 
@@ -156,6 +167,15 @@ public:
 		if (is_for_graph.back()) {ask_about_path();}
 	}
 
+	void show_nodes()
+	{
+		std::cout << "The map consists of the following cities: " << std::endl;
+		std::vector<Node>::iterator it;
+		for (it = nodes.begin(); it != nodes.end(); it++)
+		{
+			std::cout << it->name << std::endl;
+		}
+	}
 	void from_one_set(std::string start, std::string aim, double d)
 	{
 		int find_start = find_and_fill_node(start);
@@ -195,3 +215,4 @@ public:
 		nodes.push_back(someNode);
 	}
 };
+
