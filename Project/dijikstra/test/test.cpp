@@ -16,13 +16,11 @@ namespace test_components
 			// I check if the value chosen randomly is always smaller than infinity.
 			Assert::IsTrue(RAND_MAX < INF);
 		}
-
 		TEST_METHOD(Test_if_unvisited)
 		{
 			Node node;
 			Assert::IsFalse(node.visited);
 		}
-
 		TEST_METHOD(Test_is_name)
 		{
 			Node node("trial");
@@ -54,7 +52,6 @@ namespace test_components
 			bool is_greater=false;
 			if (Pair(node1,0)> Pair(node2,1)) { is_greater = true; }
 			Assert::IsTrue(is_greater);
-
 		}
 	};
 

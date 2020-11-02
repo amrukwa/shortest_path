@@ -32,34 +32,6 @@ public:
 
 class InvalidNode : public std::exception {};
 
-std::vector<bool> check_lines(std::ifstream& datafile)
-{
-	std::vector<bool> is_for_graph;
-	int cur_rows = 0;
-	char c;
-	while (datafile.get(c))
-	{
-		if (c == ' ') {cur_rows += 1;}
-		else if (c == '\n')
-		{
-			if (cur_rows == 2) { is_for_graph.push_back(true); }
-			else { is_for_graph.push_back(false); }
-			cur_rows = 0;
-		}
-	}
-	return is_for_graph;
-}
-
-std::string get_line(std::ifstream& datafile)
-{
-	char c;
-	std::string line;
-	datafile.get(c);
-	if (c != '\n') {datafile.putback(c);}
-	std::getline(datafile, line);
-	return line;
-}
-
 class Graph
 {
 private:
@@ -67,6 +39,34 @@ private:
 	std::vector <Edge> edges;
 	int ending=1;
 	int start=0;
+
+	std::vector<bool> check_lines(std::ifstream& datafile)
+	{
+		std::vector<bool> is_for_graph;
+		int cur_rows = 0;
+		char c;
+		while (datafile.get(c))
+		{
+			if (c == ' ') { cur_rows += 1; }
+			else if (c == '\n')
+			{
+				if (cur_rows == 2) { is_for_graph.push_back(true); }
+				else { is_for_graph.push_back(false); }
+				cur_rows = 0;
+			}
+		}
+		return is_for_graph;
+	}
+
+	std::string get_line(std::ifstream& datafile)
+	{
+		char c;
+		std::string line;
+		datafile.get(c);
+		if (c != '\n') { datafile.putback(c); }
+		std::getline(datafile, line);
+		return line;
+	}
 
 	int user_choose_node(std::string which_node)
 	{ 
