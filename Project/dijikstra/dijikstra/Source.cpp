@@ -13,6 +13,8 @@ int main(int argc, char** argv)
 	hc.handle_commands(datafile);
 	Graph graph(datafile);
 	datafile.close();
+	graph.dijikstra();
+	graph.show_path();
 	hc.finish();
 	return 0;
 }

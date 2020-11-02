@@ -117,6 +117,14 @@ namespace test_graph
 			Assert::AreEqual(0, graph.edges[1].destination);
 			Assert::AreEqual(3.3, graph.edges[1].dist);
 		}
+		TEST_METHOD(Test_find_edge_len)
+		{
+			Graph graph;
+			graph.from_one_set("v1", "v0", 2.3);
+			graph.from_one_set("v2", "v0", 4.3);
+			double e = graph.find_edge_len(0, 1);
+			Assert::AreEqual(2.3, e);
+		}
 	};
 
 	TEST_CLASS(testDijikstra)

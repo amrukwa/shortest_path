@@ -48,5 +48,11 @@ public:
 			exit(1); 
 		}
 	}
+	Edge(const Edge& e)
+	{
+		start = e.start;
+		destination = e.destination;
+		dist = e.dist;
+	}
 	friend class Graph;
 };

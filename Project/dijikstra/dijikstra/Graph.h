@@ -166,6 +166,17 @@ private:
 		}
 	}
 
+	void write_path(std::ofstream& out, std::vector<int> path)
+	{
+		int previous;
+		for (std::vector<int>::reverse_iterator cur = path.rbegin(); cur != path.rend(); ++cur) 
+		{
+			previous = nodes[*cur].previous;
+			if (previous == -1) { continue; }
+			out << nodes[previous].name << " " << nodes[*cur].name << " " << find_edge_len(previous, *cur) << std::endl;
+		}
+	}
+
 public:
 	Graph(){}
 	~Graph(){}
@@ -222,15 +233,48 @@ public:
 		}
 		return i;
 	}
+	double find_edge_len(int v, int w)
+	{
+		double e=0;
+		for (auto edge : edges)
+		{
+			if (edge.start == v && edge.destination == w)
+			{
+				e = edge.dist;
+				break;
+			}
+		}
+		return e;
+	}
 	void add_node(std::string name)
 	{
 		Node someNode(name);
 		nodes.push_back(someNode);
 	}
+	std::vector<int> extract_path()
+	{
+		std::vector<int> path;
+		int cur = ending;
+		path.push_back(cur);
+		while (nodes[cur].previous != -1)
+		{
+			cur = nodes[cur].previous;
+			path.push_back(cur);
+		}
+		return path;
+	}
 	void show_path()
 	{
 		if (!nodes[ending].visited) {std::cout << "There is no path." << std::endl;}
-		else {}
+		else 
+		{
+			std::cout << "There is a path!" << std::endl;
+			std::cout << nodes[start].name << " " << nodes[ending].name << " " << nodes[ending].dist << std::endl;
+			std::vector<int> path = extract_path();
+			std::ofstream outfile("path.txt");
+			write_path(outfile, path);
+			outfile.close();
+		}
 	}
 	void dijikstra()
 	{
@@ -241,19 +285,18 @@ public:
 		{
 			Pair p = q.top();
 			q.pop();
-			if (nodes[p.index].was_visited()){continue;}
+			if (nodes[p.index].visited){continue;}
 			nodes[p.index].visit();
 			if (p.index == ending) { break; }
 			for (auto edge : edges)
 			{
 				if (p.index == edge.start)
 				{
-					bool to_push = nodes[edge.destination].check_prev(p.index, edge.dist);
+					bool to_push = nodes[edge.destination].check_prev(p.index, edge.dist+nodes[p.index].dist);
 					if(to_push) { q.push(Pair(nodes[edge.destination], edge.destination)); }
 				}
 			}
 		}
-		show_path();
 	}
 };
 

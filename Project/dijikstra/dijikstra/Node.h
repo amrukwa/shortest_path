@@ -36,13 +36,11 @@ public:
 		return false;
 	}
 
-	bool was_visited() { return visited; }
-
 	void set_dist(double d) { dist = d; }
 
 	void visit() {visited = true;}
 
-	bool check_prev(int prev, double d)
+	bool check_prev(int prev, double d) 
 	{
 		if (d < dist)
 		{
