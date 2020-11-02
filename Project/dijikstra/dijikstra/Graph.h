@@ -220,12 +220,33 @@ public:
 		Node someNode(name);
 		nodes.push_back(someNode);
 	}
+	void show_path()
+	{
+		if (!nodes[ending].visited) {std::cout << "There is no path." << std::endl;}
+		else {}
+	}
 	void dijikstra()
 	{
 		std::priority_queue<Pair, std::vector<Pair>, std::greater<std::vector<Pair>::value_type> > q;
 		nodes[start].set_dist(0);
 		q.push(Pair(nodes[start],start));
-		while (!q.empty()){}
+		while (!q.empty())
+		{
+			Pair p = q.top();
+			q.pop();
+			if (nodes[p.index].was_visited()){continue;}
+			nodes[p.index].visit();
+			if (p.index == ending) { break; }
+			for (auto edge : edges)
+			{
+				if (p.index == edge.start)
+				{
+					bool to_push = nodes[edge.destination].check_prev(p.index, edge.dist);
+					if(to_push) { q.push(Pair(nodes[edge.destination], edge.destination)); }
+				}
+			}
+		}
+		show_path();
 	}
 };
 

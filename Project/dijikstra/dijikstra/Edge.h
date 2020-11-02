@@ -50,4 +50,5 @@ public:
 			exit(1); 
 		}
 	}
+	friend class Graph;
 };
