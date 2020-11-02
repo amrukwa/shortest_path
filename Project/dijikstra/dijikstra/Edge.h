@@ -27,9 +27,9 @@ void check_dist(double d)
 class Edge
 {
 private:
-	int start; // is a position in vector of Nodes
-	int destination; // is a position in vector of Nodes
-	double dist;
+	int start=0; // is a position in vector of Nodes
+	int destination=1; // is a position in vector of Nodes
+	double dist=1.0;
 public:
 	Edge() {}
 	~Edge() {}

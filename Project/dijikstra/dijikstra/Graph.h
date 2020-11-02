@@ -65,8 +65,8 @@ class Graph
 private:
 	std::vector <Node> nodes;
 	std::vector <Edge> edges;
-	int ending;
-	int start;
+	int ending=1;
+	int start=0;
 
 	int user_choose_node(std::string which_node)
 	{ 
@@ -219,6 +219,13 @@ public:
 	{
 		Node someNode(name);
 		nodes.push_back(someNode);
+	}
+	void dijikstra()
+	{
+		std::priority_queue<Pair, std::vector<Pair>, std::greater<std::vector<Pair>::value_type> > q;
+		nodes[start].set_dist(0);
+		q.push(Pair(nodes[start],start));
+		while (!q.empty()){}
 	}
 };
 

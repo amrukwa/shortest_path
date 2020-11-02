@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #define private public // only for the test purposes, I know it is a bad practice
 #include "dijikstra/Graph.h"
+#include <cstdlib>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -26,6 +27,34 @@ namespace test_components
 		{
 			Node node("trial");
 			Assert::IsTrue(node.is_name("trial"));
+		}
+		TEST_METHOD(Test_prevdist)
+		{
+			Node node("trial");
+			node.check_prev(5, 25);
+			Assert::AreEqual(5, node.previous);
+			Assert::AreEqual(25.0, node.dist);
+			Assert::IsFalse(node.visited);
+		}
+		TEST_METHOD(Test_next_prevdist)
+		{
+			Node node("trial");
+			node.check_prev(5, 25);
+			node.check_prev(6, 1);
+			Assert::AreEqual(6, node.previous);
+			Assert::AreEqual(1.0, node.dist);
+			Assert::IsFalse(node.visited);
+		}
+		TEST_METHOD(Test_distances)
+		{
+			Node node1("trial1");
+			Node node2("trial2");
+			node1.check_prev(5, 25);
+			node2.check_prev(6, 1);
+			bool is_greater=false;
+			if (Pair(node1,0)> Pair(node2,1)) { is_greater = true; }
+			Assert::IsTrue(is_greater);
+
 		}
 	};
 
@@ -96,5 +125,25 @@ namespace test_graph
 	TEST_CLASS(testDijikstra)
 	{
 	public:
+		TEST_METHOD(Test_queue_comparison)
+		{
+			double arr[3] = { 1, 23, 123};
+			Node n1("1");
+			Node n2("2");
+			Node n3("3");
+			n1.check_prev(1, 123);
+			n2.check_prev(1, 23);
+			n3.check_prev(1, 1);
+			std::priority_queue<Pair, std::vector<Pair>, std::greater<std::vector<Pair>::value_type> > q;
+			q.push(Pair(n2,1));
+			q.push(Pair(n1,0));
+			q.push(Pair(n3,2));
+			for (int i=0; i < 3; i++)
+			{
+				Pair n = q.top();
+				Assert::AreEqual(n.cur_dist, arr[i]);
+				q.pop();
+			}
+		}
 	};
 }
