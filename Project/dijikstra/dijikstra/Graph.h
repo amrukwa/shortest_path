@@ -272,6 +272,11 @@ public:
 			std::cout << nodes[start].name << " " << nodes[ending].name << " " << nodes[ending].dist << std::endl;
 			std::vector<int> path = extract_path();
 			std::ofstream outfile("path.txt");
+			if (!outfile) 
+			{
+				std::cout << "Failed to create file.";
+				exit(1);
+			}
 			write_path(outfile, path);
 			outfile.close();
 		}
