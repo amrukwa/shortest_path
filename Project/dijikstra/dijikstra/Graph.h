@@ -32,17 +32,16 @@ public:
 
 class InvalidNode : public std::exception {};
 
-class Graph
+class CheckFile
 {
 private:
-	std::vector <Node> nodes;
-	std::vector <Edge> edges;
-	int ending=1;
-	int start=0;
-
-	std::vector<bool> check_lines(std::ifstream& datafile)
+	std ::vector<bool> is_for_graph;
+public:
+	CheckFile() {}
+	~CheckFile(){}
+	friend class Graph;
+	void check_lines(std::ifstream& datafile)
 	{
-		std::vector<bool> is_for_graph;
 		int cur_rows = 0;
 		char c;
 		while (datafile.get(c))
@@ -55,9 +54,7 @@ private:
 				cur_rows = 0;
 			}
 		}
-		return is_for_graph;
 	}
-
 	std::string get_line(std::ifstream& datafile)
 	{
 		char c;
@@ -67,6 +64,15 @@ private:
 		std::getline(datafile, line);
 		return line;
 	}
+};
+
+class Graph
+{
+private:
+	std::vector <Node> nodes;
+	std::vector <Edge> edges;
+	int ending=1;
+	int start=0;
 
 	int user_choose_node(std::string which_node)
 	{ 
@@ -146,15 +152,15 @@ private:
 		}
 	}
 
-	void load_data(std::ifstream& datafile, std::vector<bool>& is_for_graph)
+	void load_data(std::ifstream& datafile, CheckFile& cf)
 	{
-		for (int i = 0; i < is_for_graph.size(); i++)
+		for (int i = 0; i < cf.is_for_graph.size(); i++)
 		{
-			if (is_for_graph[i]) {read_typical_line(datafile);}
-			else if (i == (is_for_graph.size() - 1)) { read_aim_line(datafile, is_for_graph); }
+			if (cf.is_for_graph[i]) {read_typical_line(datafile);}
+			else if (i == (cf.is_for_graph.size() - 1)) { read_aim_line(datafile, cf.is_for_graph); }
 			else
 			{
-				std::string line = get_line(datafile);
+				std::string line = cf.get_line(datafile);
 				ask_about_line(line);
 			}
 		}
@@ -166,11 +172,12 @@ public:
 
 	Graph(std::ifstream& datafile)
 	{
-		std::vector<bool> is_for_graph = check_lines(datafile);
+		CheckFile cf;
+		cf.check_lines(datafile);
 		datafile.clear();
 		datafile.seekg(0, std::ios::beg);
-		load_data(datafile, is_for_graph);
-		if (is_for_graph.back()) {ask_about_path();}
+		load_data(datafile, cf);
+		if (cf.is_for_graph.back()) {ask_about_path();}
 	}
 
 	void show_nodes()
