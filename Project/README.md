@@ -5,9 +5,9 @@
 This is a program that looks for the shortest path between two points. All the single connections should be given in the file specified by the user. If the path does not exist, the user is informed. If it does exist, the file with the shortest path and consecutive connections is created.
 ## The commands
 The program is designed to be run from the command line. The controls are defined as follows:
-* dijikstra.exe - by default, program runs without the commands. In this configuration, it will look for the file "data.txt" in the same directory. If it cannot be found, you will be informed of this.
-* dijikstra.exe --help - run this command to get basic information about the commands and further guidance through the messages.
-* dijikstra.exe --input=location\data.txt - if you want to find the shortest path for the points defined in the file somewhere outside the current directory, specify its location and the programm will use it.
+* **_dijikstra.exe_** - by default, program runs without the commands. In this configuration, it will look for the file "data.txt" in the same directory. If it cannot be found, you will be informed of this.
+* **_dijikstra.exe --help_** - run this command to get basic information about the commands and further guidance through the messages.
+* **_dijikstra.exe --input=location\data.txt_** - if you want to find the shortest path for the points defined in the file somewhere outside the current directory, specify its location and the programm will use it.
 ## The input file format
 The file should consists of the lines of the following structure: start_point end_point distance between them. Always end the line with the enter. Do not use commas. If you want to specify the points between which you want to find the shortest path, write them in the following format: start_point end_point. End the line with enter as well. The nonpositive distance, lack of the distance in any other line, etc. will be expected to be corrected by the user through the command line during the execution process. Remember to write down the cities/point names consisting of more than one word with _ between them. Otherwise, you will be asked to specify the line once again.
 ## The outcome
