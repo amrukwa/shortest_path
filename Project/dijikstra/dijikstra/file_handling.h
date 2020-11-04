@@ -24,6 +24,7 @@ private:
 		std::string str;
 		if (!ifile) { throw NoDirectory(); }
 		while (std::getline(ifile, str)) {std::cout << str << std::endl;}
+		ifile.close();
 	}
 
 	void read_dir(char* adress, std::ifstream& ifile)
