@@ -1,15 +1,20 @@
-# include <iostream>
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
+# include "Graph.h"
+# include "file_handling.h"
 
-
-int main()
+int main(int argc, char** argv)
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
-	int* x = (int*)malloc(3 * sizeof(int));
-	free(x);
-	system("pause");
+	std::ifstream datafile;
+	Handle_Commands hc(argc, argv);
+	hc.handle_commands(datafile);
+	Graph graph(datafile);
+	datafile.close();
+	graph.dijikstra();
+	graph.show_path();
+	hc.finish();
 	return 0;
 }
