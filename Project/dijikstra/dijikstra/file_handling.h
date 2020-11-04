@@ -19,10 +19,11 @@ private:
 
 	void give_help()
 	{
-		std::cout << "By default, the program will try to read 'data.txt' file from current directory." << std::endl;
-		std::cout << "Use --help command to get help on the program usage." << std::endl;
-		std::cout << "Use --input= command, location and the name of the file to run the program on it: --input=location\\data.txt" << std::endl;
-		std::cout << "If something is wrong with the file you specified, you will be given opportunity to fix this." << std::endl;
+		std::ifstream ifile;
+		ifile.open("help.txt");
+		std::string str;
+		if (!ifile) { throw NoDirectory(); }
+		while (std::getline(ifile, str)) {std::cout << str << std::endl;}
 	}
 
 	void read_dir(char* adress, std::ifstream& ifile)
@@ -41,7 +42,8 @@ private:
 	{
 		if (strncmp(p, "--help", 6) == 0)
 		{
-			give_help();
+			try { give_help(); }
+			catch (NoDirectory) { std::cout << "Help file could not be found."; }
 			exit(0);
 		}
 		if (strncmp(p, "--input=", 8) == 0)
