@@ -40,6 +40,8 @@ jobs:
       - name: zip files
         id: zip_files
         uses: papeloto/action-zip@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: dijikstra.exe Project/dijikstra/dijikstra/help.txt Project/dijikstra/dijikstra/data.txt
+          files: Project/dijikstra/x64/Release/dijikstra.exe Project/dijikstra/dijikstra/help.txt Project/dijikstra/dijikstra/data.txt
           dest: dijikstra.zip
