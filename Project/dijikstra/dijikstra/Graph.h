@@ -284,7 +284,7 @@ public:
 	void dijikstra()
 	{
 		std::priority_queue<Pair, std::vector<Pair>, std::greater<std::vector<Pair>::value_type> > q;
-		nodes[start].set_dist(0);
+		nodes[start].dist = 0;
 		q.push(Pair(nodes[start],start));
 		while (!q.empty())
 		{
