@@ -45,9 +45,14 @@ public:
 		return false;
 	}
 
-	void visit() {visited = true;}
+	void visit() 
+	// sets this->visited to true.
+	{visited = true;}
 
 	bool check_prev(int prev, double d) 
+	// checks if the distance from the start improves while going through Node
+	// with index prev and distance d from this object
+	// if it improves, the distance and previous of the object are improved.
 	{
 		if (d < dist)
 		{
@@ -57,27 +62,33 @@ public:
 		}
 		return false;
 	}
+	// friend classes for easier implementation of the algorithm
 	friend class Pair;
 	friend class Graph;
 };
 
 class Pair
 {
+// this class stores a pair of integer and index
 private:
 	int index = 0;
 	double cur_dist = 0;
 public:
-	Pair(){}
+	Pair(){} // default constructor
 	Pair(const Node& node, int idx)
+	// constructs the object from the node, taking its distance from the start
+	// and index in the vector of nodes.
 	{
 		index = idx;
 		cur_dist = node.dist;
 	}
-	~Pair() {}
+	~Pair() {} // default destructor
 	friend bool operator> (const Pair& a, const Pair& b);
 	friend bool operator< (const Pair& a, const Pair& b);
+	// friend class for easier implementation of priority queue
 	friend class Graph;
 };
 
+// operators comparing cur_dist members of the class instances
 bool operator> (const Pair& a, const Pair& b) { return a.cur_dist > b.cur_dist; }
 bool operator< (const Pair& a, const Pair& b) { return a.cur_dist < b.cur_dist; }
