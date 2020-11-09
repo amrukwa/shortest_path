@@ -4,6 +4,8 @@
 #include<fstream>
 
 class ZeroEdge : public std::exception
+// as mentioned in class Edge, the programmer is responsible for ensuring correct edges
+// I handle the error of 0 edge ength by asking the user to specify it again.
 {
 public:
 	double specify_edge(std::string st, std::string end)
@@ -16,6 +18,10 @@ public:
 };
 
 class InvalidEdge : public std::exception
+// used (in this implementation) for reading from file. 
+// If the invalid edge is provided through the command line, program terminates.
+// in case of encountering characters instead of double for edge length, user is asked to provide the length
+// the file status is cleared and the encountered invalid value is omitted from further reading.
 {
 public:
 	double specify_edge(std::string st, std::string end, std::istream& datafile)
@@ -31,16 +37,19 @@ public:
 };
 
 class InvalidNode : public std::exception {};
+// class of which instance I will throw when user specifies the node that does not occur in the graph.
 
 class CheckFile
+// class to chreck if the file's lines can be directly transformed into the graph
 {
 private:
 	std ::vector<bool> is_for_graph;
 public:
-	CheckFile() {}
-	~CheckFile(){}
-	friend class Graph;
+	CheckFile() {} // default constructor
+	~CheckFile(){} // destructor
+	friend class Graph; // friend class to access is_for_graph
 	void check_lines(std::ifstream& datafile)
+	// this method checks the lines of the datafile and sets the appropriate value at the corresponding index of is_for_graph
 	{
 		int cur_rows = 0;
 		char c;
@@ -56,6 +65,8 @@ public:
 		}
 	}
 	std::string get_line(std::ifstream& datafile)
+	// this method gets the next line from the file, even with trailing enter after previous reading type, and returns it for further usage
+	//(some of the data is read with std::cin, some with std::getline, so it is necessary)
 	{
 		char c;
 		std::string line;
@@ -67,6 +78,7 @@ public:
 };
 
 class Graph
+// class containing the information about the graph, its nodes and edges, as well as its start and end
 {
 private:
 	std::vector <Node> nodes;
@@ -75,6 +87,8 @@ private:
 	int start=0;
 
 	int user_choose_node(std::string which_node)
+	// general method to ask user to specify the chosen node (start/end in this case), 
+	//which_node makes clear what is the user being asked for
 	{ 
 		int node;
 		std::string n;
@@ -86,6 +100,8 @@ private:
 	}
 
 	int user_validate_node(std::string which_node)
+	// this method catches errors if the node chosen by the user does not belong to the graph.
+	// if it does not, it informs the user and terminates the program.
 	{
 		int node;
 		try {node = user_choose_node(which_node);}
@@ -98,6 +114,7 @@ private:
 	}
 
 	void ask_about_path()
+	// asks user to specify start and end of the path after showing possible nodes
 	{
 		show_nodes();
 		start = user_validate_node("starting node");
@@ -105,6 +122,7 @@ private:
 	}
 
 	double from_three(std::string& st, std::string& end, std::istream& datafile)
+	// loads and checks if the edge can be created with use of three consecutive informations from the datafile
 	{
 		double dist;
 		datafile >> st >> end >> dist;
@@ -114,6 +132,9 @@ private:
 	}
 
 	void ask_about_line(std::string line)
+	// shows the line to the user and asks them to specify the correct connection
+	// should get two strings (start and end), as well as one double
+	// if the input is incorrect, the program is terminated.
 	{
 		std::string st, end;
 		double dist;
@@ -125,6 +146,9 @@ private:
 	}
 
 	void read_typical_line(std::ifstream& datafile)
+	// reads correctly written line (or expected to be such - the program does not know yet if edge could poossibly be character or 0)
+	// if it really is correct, the data is loaded into the graph (edge and nodes)
+	// if it is not, the user is asked to specify the correct edge length.
 	{
 		std::string st, end;
 		double dist;
@@ -135,6 +159,9 @@ private:
 	}
 
 	void read_aim_line(std::ifstream& datafile, std::vector<bool>& is_for_graph)
+	// tries to read the aim line (at this point expects it to be without the specified edge)
+	// if the specified nodes are not found in the graph, changes the value of is_for_graph for the last line to signal the need for asking the user
+	// otherwise simply sets start and end of the graph
 	{
 		std::string st, end;
 		datafile >> st >> end;
@@ -153,6 +180,9 @@ private:
 	}
 
 	void load_data(std::ifstream& datafile, CheckFile& cf)
+	// loads the data from the datafile
+	// if the line is marked as incorrect, the user is asked to correct it
+	// loads the start and end if possible as well
 	{
 		for (int i = 0; i < cf.is_for_graph.size(); i++)
 		{
@@ -167,6 +197,8 @@ private:
 	}
 
 	void write_path(std::ofstream& out, std::vector<int> path)
+	// saves the path to the specified file
+	// as the path vector is written backwards, the iterating must be done backwards as well
 	{
 		int previous;
 		for (std::vector<int>::reverse_iterator cur = path.rbegin(); cur != path.rend(); ++cur) 
@@ -178,10 +210,11 @@ private:
 	}
 
 public:
-	Graph(){}
-	~Graph(){}
+	Graph(){} // default constructor
+	~Graph(){} // default destructor
 
 	Graph(std::ifstream& datafile)
+	// constructs the Graph from the specified datafile, possibly asks the user for corrections
 	{
 		CheckFile cf;
 		cf.check_lines(datafile);
@@ -192,6 +225,7 @@ public:
 	}
 
 	void show_nodes()
+	// shows all the nodes in the graph to the user
 	{
 		std::cout << "The map consists of the following cities: " << std::endl;
 		std::vector<Node>::iterator it;
@@ -201,6 +235,8 @@ public:
 		}
 	}
 	void from_one_set(std::string start, std::string aim, double d)
+	// creates an edge from the specified triplet
+	// if the nodes do not exist yet, they are created as well.
 	{
 		int find_start = find_and_fill_node(start);
 		int find_aim = find_and_fill_node(aim);
@@ -208,6 +244,8 @@ public:
 		edges.push_back(someEdge);
 	}
 	int find_where_node(std::string name)
+	// finds the index of the node with the given name in the nodes vector and returns it
+	// if the node could not be found, returns -1
 	{
 		std::vector<Node>::iterator it;
 		int i = -1; // this way we will know there is none such node
@@ -224,6 +262,8 @@ public:
 		return i;
 	}
 	int find_and_fill_node(std::string name)
+	// finds the node and returns its index
+	// if the node is not in the vector, creates it and appends it to the vector, returning the new index
 	{
 		int i = find_where_node(name);
 		if (i == -1)
@@ -234,6 +274,8 @@ public:
 		return i;
 	}
 	double find_edge_len(int v, int w)
+	// returns the length of the edge between specified points (indices of nodes)
+	// if there is no edge, returns 0
 	{
 		double e=0;
 		for (auto edge : edges)
@@ -247,11 +289,14 @@ public:
 		return e;
 	}
 	void add_node(std::string name)
+	// adds node with given name
 	{
 		Node someNode(name);
 		nodes.push_back(someNode);
 	}
 	std::vector<int> extract_path()
+	// finds backward path from the "previous" members of Node objects
+	// and returns it
 	{
 		std::vector<int> path;
 		int cur = ending;
@@ -264,6 +309,8 @@ public:
 		return path;
 	}
 	void show_path()
+	// if the end point is not visited, shows that there is no path
+	// otherwise shows that the path exists and saves it to the file
 	{
 		if (!nodes[ending].visited) {std::cout << "There is no path." << std::endl;}
 		else 
@@ -282,6 +329,7 @@ public:
 		}
 	}
 	void dijikstra()
+	// runs the dijikstra algorithm for the specified graph
 	{
 		std::priority_queue<Pair, std::vector<Pair>, std::greater<std::vector<Pair>::value_type> > q;
 		nodes[start].dist = 0;
@@ -304,4 +352,3 @@ public:
 		}
 	}
 };
-
