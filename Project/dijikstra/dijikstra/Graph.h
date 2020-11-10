@@ -66,7 +66,7 @@ public:
 	}
 	std::string get_line(std::ifstream& datafile)
 	// this method gets the next line from the file, even with trailing enter after previous reading type, and returns it for further usage
-	//(some of the data is read with std::cin, some with std::getline, so it is necessary)
+	//(some of the data is read with >> operator, some with std::getline, so it is necessary)
 	{
 		char c;
 		std::string line;
