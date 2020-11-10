@@ -13,7 +13,7 @@ You can encounter the following messages during the program execution:
 1. **Help** message: it will show you all the other messages that can be displayed, as well as the commands that can be used by you.
 2. **"No such file in chosen directory."** - it means exactly that. The directory and the file you provided could not be found or you did not specify any and the program have not found the default file.
 3. **"Unknown command"** - you provided the command that could not be processed.
-4. **"The edge should have positive value. Specify the correct length."** accompanied by the names od the points - you gave 0 for the edge length. Provide actual value for the edge between these points.
+4. **"The edge should have positive value. Specify the correct length."** accompanied by the names of the points - you gave 0 for the edge length. Provide actual value for the edge between these points.
 5. **"Invalid edge. Specify the correct length."** - you gave character for the edge length or gave a point with two part name and no edge. You can only specify the edge length here.
 6. **"The edge length cannot be 0/character."** - after program request for the correct edge length you provided 0 or character instead of positive value.
 7. **"... was provided. Specify the actual edge."** - the input line was lacking/you provided too much. You should specify it again: start_point end_point distance

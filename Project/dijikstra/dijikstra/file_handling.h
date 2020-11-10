@@ -78,7 +78,7 @@ public:
 	~Handle_Commands(){} // destructor
 
 	void finish()
-	// simple implementation of "system(pause)", because it is against the standard
+	// simple implementation of "system("pause")", because it is against the standard
 	{
 		std::cout << "Press any key to continue..." << std::endl;
 		char c = getchar();

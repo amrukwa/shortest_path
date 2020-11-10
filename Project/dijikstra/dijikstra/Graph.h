@@ -27,7 +27,7 @@ public:
 	double specify_edge(std::string st, std::string end, std::istream& datafile)
 	{
 		double dist;
-		char trashbox;
+		std::string trashbox;
 		std::cout << st << " " << end << std::endl << "Invalid edge. Specify the correct length." << std::endl;
 		datafile.clear();
 		datafile >> trashbox;
