@@ -101,7 +101,7 @@ private:
 
 	int user_validate_node(std::string which_node, bool* is_corrected)
 	// this method catches errors if the node chosen by the user does not belong to the graph.
-	// if it does not, it informs the user and terminates the program.
+	// if it does not, it informs the user and will lead to the program termination by setting is_corrected to false.
 	{
 		int node;
 		try {node = user_choose_node(which_node);}
@@ -116,6 +116,7 @@ private:
 
 	bool ask_about_path()
 	// asks user to specify start and end of the path after showing possible nodes
+	// returns information about correctness of specified nodes
 	{
 		bool is_correct = true;
 		show_nodes();
@@ -137,7 +138,7 @@ private:
 	void ask_about_line(std::string line, bool* is_corrected)
 	// shows the line to the user and asks them to specify the correct connection
 	// should get two strings (start and end), as well as one double
-	// if the input is incorrect, the program is terminated.
+	// if the input is incorrect, set is_corrected to false.
 	{
 		std::string st, end;
 		double dist;
@@ -153,6 +154,7 @@ private:
 	// reads correctly written line (or expected to be such - the program does not know yet if edge could poossibly be character or 0)
 	// if it really is correct, the data is loaded into the graph (edge and nodes)
 	// if it is not, the user is asked to specify the correct edge length.
+	// if user did not correct the length, is_corrected is set to false.
 	{
 		std::string st, end;
 		double dist;
@@ -188,6 +190,7 @@ private:
 	bool load_data(std::ifstream& datafile, CheckFile& cf)
 		// loads the data from the datafile
 		// if the line is marked as incorrect, the user is asked to correct it
+		// if user improvements are not correct, returns false
 		// loads the start and end if possible as well
 	{
 		bool is_corrected = true;
@@ -227,6 +230,7 @@ public:
 
 	void from_file(std::ifstream& datafile)
 	// loads to the Graph from the specified datafile, possibly asks the user for corrections
+	// throws errors if the file could not be corrected in case of typos
 	{
 		CheckFile cf;
 		cf.check_lines(datafile);
