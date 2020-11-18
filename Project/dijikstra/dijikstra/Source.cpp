@@ -11,7 +11,13 @@ int main(int argc, char** argv)
 	std::ifstream datafile;
 	Handle_Commands hc(argc, argv);
 	hc.handle_commands(datafile);
-	Graph graph(datafile);
+	Graph graph;
+	try {graph.from_file(datafile);}
+	catch (InvalidEdge)
+	{
+		datafile.close();
+		return 1;
+	}
 	datafile.close();
 	graph.dijikstra();
 	graph.show_path();

@@ -99,7 +99,7 @@ private:
 		return node;
 	}
 
-	int user_validate_node(std::string which_node)
+	int user_validate_node(std::string which_node, bool* is_corrected)
 	// this method catches errors if the node chosen by the user does not belong to the graph.
 	// if it does not, it informs the user and terminates the program.
 	{
@@ -108,17 +108,20 @@ private:
 		catch (InvalidNode)
 		{
 			std::cout << "No such node." << std::endl;
-			exit(1);
+			*is_corrected=false;
+			return 0;
 		}
 		return node;
 	}
 
-	void ask_about_path()
+	bool ask_about_path()
 	// asks user to specify start and end of the path after showing possible nodes
 	{
+		bool is_correct = true;
 		show_nodes();
-		start = user_validate_node("starting node");
-		ending = user_validate_node("ending node");
+		start = user_validate_node("starting node", &is_correct);
+		if (is_correct) { ending = user_validate_node("ending node", &is_correct); }
+		return is_correct;
 	}
 
 	double from_three(std::string& st, std::string& end, std::istream& datafile)
@@ -131,7 +134,7 @@ private:
 		return dist;
 	}
 
-	void ask_about_line(std::string line)
+	void ask_about_line(std::string line, bool* is_corrected)
 	// shows the line to the user and asks them to specify the correct connection
 	// should get two strings (start and end), as well as one double
 	// if the input is incorrect, the program is terminated.
@@ -142,10 +145,11 @@ private:
 		try {dist = from_three(st, end, std::cin);}
 		catch (ZeroEdge err) {dist = err.specify_edge(st, end);}
 		catch (InvalidEdge err) { dist = err.specify_edge(st, end, std::cin); }
-		from_one_set(st, end, dist);
+		if (dist == 0){*is_corrected = false;}
+		else {from_one_set(st, end, dist);}
 	}
 
-	void read_typical_line(std::ifstream& datafile)
+	void read_typical_line(std::ifstream& datafile, bool* is_corrected)
 	// reads correctly written line (or expected to be such - the program does not know yet if edge could poossibly be character or 0)
 	// if it really is correct, the data is loaded into the graph (edge and nodes)
 	// if it is not, the user is asked to specify the correct edge length.
@@ -155,7 +159,9 @@ private:
 		try {dist = from_three(st, end, datafile);}
 		catch (ZeroEdge err) {dist = err.specify_edge(st, end);}
 		catch (InvalidEdge err) {dist = err.specify_edge(st, end, datafile);}
-		from_one_set(st, end, dist);
+		if (dist == 0) { *is_corrected = false; }
+		else
+		{from_one_set(st, end, dist);}
 	}
 
 	void read_aim_line(std::ifstream& datafile, std::vector<bool>& is_for_graph)
@@ -179,21 +185,27 @@ private:
 		}
 	}
 
-	void load_data(std::ifstream& datafile, CheckFile& cf)
-	// loads the data from the datafile
-	// if the line is marked as incorrect, the user is asked to correct it
-	// loads the start and end if possible as well
+	bool load_data(std::ifstream& datafile, CheckFile& cf)
+		// loads the data from the datafile
+		// if the line is marked as incorrect, the user is asked to correct it
+		// loads the start and end if possible as well
 	{
+		bool is_corrected = true;
 		for (int i = 0; i < cf.is_for_graph.size(); i++)
 		{
-			if (cf.is_for_graph[i]) {read_typical_line(datafile);}
+			if (cf.is_for_graph[i]) {read_typical_line(datafile, &is_corrected);}
 			else if (i == (cf.is_for_graph.size() - 1)) { read_aim_line(datafile, cf.is_for_graph); }
 			else
 			{
 				std::string line = cf.get_line(datafile);
-				ask_about_line(line);
+				ask_about_line(line, &is_corrected);
+			}
+			if (!is_corrected)
+			{
+				break;
 			}
 		}
+		return is_corrected;
 	}
 
 	void write_path(std::ofstream& out, std::vector<int> path)
@@ -213,17 +225,20 @@ public:
 	Graph(){} // default constructor
 	~Graph(){} // default destructor
 
-	Graph(std::ifstream& datafile)
-	// constructs the Graph from the specified datafile, possibly asks the user for corrections
+	void from_file(std::ifstream& datafile)
+	// loads to the Graph from the specified datafile, possibly asks the user for corrections
 	{
 		CheckFile cf;
 		cf.check_lines(datafile);
 		datafile.clear();
 		datafile.seekg(0, std::ios::beg);
-		load_data(datafile, cf);
-		if (cf.is_for_graph.back()) {ask_about_path();}
+		if (!load_data(datafile, cf))
+		{
+			std::cout << "Invalid Edge format." << std::endl;
+			throw(InvalidEdge());
+		};
+		if (cf.is_for_graph.back()) { if (!ask_about_path()) { throw(InvalidEdge()); } }
 	}
-
 	void show_nodes()
 	// shows all the nodes in the graph to the user
 	{
