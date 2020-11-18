@@ -13,8 +13,15 @@ int main(int argc, char** argv)
 	hc.handle_commands(datafile);
 	Graph graph;
 	try {graph.from_file(datafile);}
+	catch (InvalidNode)
+	{
+		std::cout << "No such node." << std::endl;
+		datafile.close();
+		return 1;
+	}
 	catch (InvalidEdge)
 	{
+		std::cout << "Invalid edge format." << std::endl;
 		datafile.close();
 		return 1;
 	}
