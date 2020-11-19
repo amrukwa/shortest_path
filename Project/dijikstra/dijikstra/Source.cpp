@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	datafile.close();
-	graph.dijikstra();
+	graph.dijkstra();
 	graph.show_path();
 	hc.finish();
 	return 0;
